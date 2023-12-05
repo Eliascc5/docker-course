@@ -1,12 +1,14 @@
 ---------------------
 Create Network
 ---------------------
+Note: Traditional way of creating a Network (Without using Docker compose)
 
 docker network create goals-net
 
 ---------------------
-Run MongoDB Container
+-> Run MongoDB Container
 ---------------------
+Note: mongo's image is avaible on DockerHub
 
 docker run --name mongodb \
   -e MONGO_INITDB_ROOT_USERNAME=max \
@@ -18,13 +20,13 @@ docker run --name mongodb \
   mongo
 
 ---------------------
-Build Node API Image
+-> Build Node API Image
 ---------------------
 
 docker build -t goals-node .
 
 ---------------------
-Run Node API Container
+-> Run Node API Container
 ---------------------
 
 docker run --name goals-backend \

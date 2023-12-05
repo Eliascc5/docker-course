@@ -1,16 +1,19 @@
 version: "3.8"
-services:
-  mongodb:
+
+services: 
+  mongodb: #Container #1
     image: 'mongo'
     volumes: 
       - data:/data/db
-    # environment: 
+
+    #Both ways (written below) of declaring enviroment variables are supported 
+    # environment:   
     #   MONGO_INITDB_ROOT_USERNAME: max
     #   MONGO_INITDB_ROOT_PASSWORD: secret
       # - MONGO_INITDB_ROOT_USERNAME=max
     env_file: 
       - ./env/mongo.env
-  backend:
+  backend: #Container #2
     build: ./backend
     # build:
     #   context: ./backend
@@ -21,23 +24,24 @@ services:
       - '80:80'
     volumes: 
       - logs:/app/logs
-      - ./backend:/app
+      - ./backend:/app     #Binding backend'folder  with app'folder inside the container. It allows to see changes instantly 
       - /app/node_modules
     env_file: 
       - ./env/backend.env
     depends_on:
       - mongodb
-  frontend:
+  frontend: #Container #3
     build: ./frontend
     ports: 
       - '3000:3000'
     volumes: 
-      - ./frontend/src:/app/src
-    stdin_open: true
+      - ./frontend/src:/app/src #Binding frontend'folder  with app'folder inside the container. It allows to see changes instantly
+    stdin_open: true #This line is required since we should enter some values in order to configure some fime
     tty: true
-    depends_on: 
+    depends_on: #To express dependency with other container in the same network
       - backend
 
+#We're gonna list JUST named volumes (anonymous volumes and mount-bind don't need to be listed)
 volumes: 
   data:
   logs:
